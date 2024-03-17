@@ -1,13 +1,28 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useState, useEffect } from 'react';
-import { Avatar, Grid, Typography, IconButton, TextField, Button, MenuItem } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import React, { useState, useEffect } from "react";
+import {
+  Avatar,
+  Grid,
+  Typography,
+  IconButton,
+  TextField,
+  Button,
+  MenuItem,
+  InputLabel,
+} from "@mui/material";
+import { Edit } from "@mui/icons-material";
 
-const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMode }) => {
+const ProfileDetails = ({
+  userData,
+  editMode,
+  onEditClick,
+  onSaveClick,
+  setEditMode,
+}) => {
   const [editedUserData, setEditedUserData] = useState({ ...userData });
-  const [imageUrl,setImageUrl] = useState(editedUserData.profilePic)
-  const [backupImageUrl,setBackupImageUrl] = useState(imageUrl)
+  const [imageUrl, setImageUrl] = useState(editedUserData.profilePic);
+  const [backupImageUrl, setBackupImageUrl] = useState(imageUrl);
 
   const onInputChange = (field, value) => {
     setEditedUserData({ ...editedUserData, [field]: value });
@@ -16,29 +31,51 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
     onSaveClick(editedUserData);
   };
 
-  const handleImageChange = (e) =>{
-    setBackupImageUrl(imageUrl)
-    setImageUrl(URL.createObjectURL(e.target.files[0]))
-    onInputChange('profilePic', e.target.files[0])
-  }
+  const handleImageChange = (e) => {
+    setBackupImageUrl(imageUrl);
+    setImageUrl(URL.createObjectURL(e.target.files[0]));
+    onInputChange("profilePic", e.target.files[0]);
+  };
 
   const handleCancel = () => {
-    setEditedUserData({ ...userData }); 
-    setImageUrl(backupImageUrl)
-    setEditMode(false)
+    setEditedUserData({ ...userData });
+    setImageUrl(backupImageUrl);
+    setEditMode(false);
   };
 
   return (
-    <Grid container spacing={2} alignItems="center" style={{ margin: '10px' }}>
+    <Grid container spacing={2} alignItems="center" style={{ margin: "10px" }}>
       <Grid item>
-        <Avatar src={ imageUrl || 'https://via.placeholder.com/150'} alt="Profile Picture" sx={{ width: 100, height: 100 }} />
+        <Avatar
+          src={imageUrl || "https://via.placeholder.com/150"}
+          alt="Profile Picture"
+          sx={{ width: 100, height: 100 }}
+        />
         {editMode && (
           <>
-          <input type="file" accept="image/*" onChange={(e) => handleImageChange(e)} style={{ display: 'none' }} id="profile-pic-input" />
-          <label htmlFor="profile-pic-input">
-          <Button variant="outlined" component="span" size="small" sx={{ color: 'rgba(0, 0, 0, 0.54)', border: '1px solid rgba(0, 0, 0, 0.13)', marginTop: '10px', fontSize:'small'}}>Upload</Button>
-          </label>
-        </>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => handleImageChange(e)}
+              style={{ display: "none" }}
+              id="profile-pic-input"
+            />
+            <label htmlFor="profile-pic-input">
+              <Button
+                variant="outlined"
+                component="span"
+                size="small"
+                sx={{
+                  color: "rgba(0, 0, 0, 0.54)",
+                  border: "1px solid rgba(0, 0, 0, 0.13)",
+                  marginTop: "10px",
+                  fontSize: "small",
+                }}
+              >
+                Upload
+              </Button>
+            </label>
+          </>
         )}
       </Grid>
       <Grid item xs={12} sm container>
@@ -48,31 +85,52 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
           </Grid>
           <Grid item>
             {editMode ? (
-              <TextField
-                label="Date of Birth"
-                type="date"
-                value={editedUserData.dateOfBirth}
-                onChange={(e) => onInputChange('dateOfBirth', e.target.value)}
-              />
+              <>
+                <InputLabel htmlFor="birthday">Birthday</InputLabel>
+                <TextField
+                  type="date"
+                  id="birthday"
+                  value={editedUserData.dateOfBirth}
+                  onChange={(e) => onInputChange("dateOfBirth", e.target.value)}
+                />
+              </>
             ) : (
-              <Typography variant="body1" style={{ color: '#4CAF50', fontWeight: 'bold' }}>Date of Birth: {editedUserData.dateOfBirth}</Typography>
+              <Typography
+                variant="body1"
+                style={{ color: "#4CAF50", fontWeight: "bold" }}
+              >
+                Date of Birth: {editedUserData.dateOfBirth}
+              </Typography>
             )}
           </Grid>
           <Grid item>
-            <Typography variant="body1" style={{ color: '#4CAF50', fontWeight: 'bold' }}>Email: {editedUserData.email}</Typography>
+            <Typography
+              variant="body1"
+              style={{ color: "#4CAF50", fontWeight: "bold" }}
+            >
+              Email: {editedUserData.email}
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
       <Grid item xs={12}>
         {editMode ? (
           <>
-          <Button variant="contained" onClick={() => onSaveClick(editedUserData)} sx={{ marginRight: '5px' }}>Save</Button>
-          <Button variant="contained" color="error" onClick={handleCancel}>Cancel</Button>
+            <Button
+              variant="contained"
+              onClick={() => onSaveClick(editedUserData)}
+              sx={{ marginRight: "5px" }}
+            >
+              Save
+            </Button>
+            <Button variant="contained" color="error" onClick={handleCancel}>
+              Cancel
+            </Button>
           </>
-
         ) : (
-
-          <Button variant="contained" color="success" onClick={onEditClick}>Edit</Button>
+          <Button variant="contained" color="success" onClick={onEditClick}>
+            Edit
+          </Button>
         )}
       </Grid>
       <Grid item xs={12}>
@@ -84,13 +142,13 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
             label="Mobile Number"
             value={editedUserData.mobileNumber}
             disabled={!editMode}
-            onChange={(e) => onInputChange('mobileNumber', e.target.value)}
+            onChange={(e) => onInputChange("mobileNumber", e.target.value)}
             InputProps={{
               style: {
-                color: editMode ? '#000' : '#4CAF50',
-                fontWeight: 'bold',
-                backgroundColor: editMode ? '#fff' : 'rgba(76, 175, 80, 0.05)',
-                width: '175px',
+                color: editMode ? "#000" : "#4CAF50",
+                fontWeight: "bold",
+                backgroundColor: editMode ? "#fff" : "rgba(76, 175, 80, 0.05)",
+                width: "175px",
               },
             }}
           />
@@ -100,13 +158,13 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
             label="Address"
             value={editedUserData.address}
             disabled={!editMode}
-            onChange={(e) => onInputChange('address', e.target.value)}
+            onChange={(e) => onInputChange("address", e.target.value)}
             InputProps={{
               style: {
-                color: editMode ? '#000' : '#4CAF50',
-                fontWeight: 'bold',
-                backgroundColor: editMode ? '#fff' : 'rgba(76, 175, 80, 0.05)',
-                width: '350px',
+                color: editMode ? "#000" : "#4CAF50",
+                fontWeight: "bold",
+                backgroundColor: editMode ? "#fff" : "rgba(76, 175, 80, 0.05)",
+                width: "350px",
               },
             }}
           />
@@ -116,13 +174,13 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
             label="LinkedIn"
             value={editedUserData.linkedin}
             disabled={!editMode}
-            onChange={(e) => onInputChange('linkedin', e.target.value)}
+            onChange={(e) => onInputChange("linkedin", e.target.value)}
             InputProps={{
               style: {
-                color: editMode ? '#000' : '#4CAF50',
-                fontWeight: 'bold',
-                backgroundColor: editMode ? '#fff' : 'rgba(76, 175, 80, 0.05)',
-                width: '375px',
+                color: editMode ? "#000" : "#4CAF50",
+                fontWeight: "bold",
+                backgroundColor: editMode ? "#fff" : "rgba(76, 175, 80, 0.05)",
+                width: "375px",
               },
             }}
           />
@@ -132,13 +190,13 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
             label="GitHub"
             value={editedUserData.github}
             disabled={!editMode}
-            onChange={(e) => onInputChange('github', e.target.value)}
+            onChange={(e) => onInputChange("github", e.target.value)}
             InputProps={{
               style: {
-                color: editMode ? '#000' : '#4CAF50',
-                fontWeight: 'bold',
-                backgroundColor: editMode ? '#fff' : 'rgba(76, 175, 80, 0.05)',
-                width: '350px',
+                color: editMode ? "#000" : "#4CAF50",
+                fontWeight: "bold",
+                backgroundColor: editMode ? "#fff" : "rgba(76, 175, 80, 0.05)",
+                width: "350px",
               },
             }}
           />
@@ -149,13 +207,13 @@ const ProfileDetails = ({ userData, editMode, onEditClick, onSaveClick,setEditMo
             label="Language"
             value={editedUserData.language}
             disabled={!editMode}
-            onChange={(e) => onInputChange('language', e.target.value)}
+            onChange={(e) => onInputChange("language", e.target.value)}
             InputProps={{
               style: {
-                color: editMode ? '#000' : '#4CAF50',
-                fontWeight: 'bold',
-                backgroundColor: editMode ? '#fff' : 'rgba(76, 175, 80, 0.05)',
-                width: '150px',
+                color: editMode ? "#000" : "#4CAF50",
+                fontWeight: "bold",
+                backgroundColor: editMode ? "#fff" : "rgba(76, 175, 80, 0.05)",
+                width: "150px",
               },
             }}
           >
