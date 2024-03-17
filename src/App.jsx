@@ -1,33 +1,32 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from "react";
-import SignUpPage from "./components/signup";
-import { Outlet } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { logoutUser } from "./redux/auth";
-import { Button } from "@mui/material";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Navbar from "./components/navbar";
+import SignInForm from "./components/signin";
+import SignUpPage from "./components/signup";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!user) {
+    if (!user ) {
       navigate("/signin");
     }
   }, [user, navigate]);
+
   return (
     <div>
-      {user && (
-        <div>
-           <Navbar />
-        </div>
+      {user && <Navbar />}
+      
+      {user ? <Outlet /> : (
+        <>
+          {location.pathname === "/signin" && <SignInForm />}
+          {location.pathname === "/signup" && <SignUpPage />}
+        </>
       )}
-
-      <Outlet />
     </div>
   );
 }

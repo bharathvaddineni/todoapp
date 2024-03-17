@@ -25,7 +25,7 @@ const Navbar = () => {
       <AppBar position="static" style={{ background: "#008080" }}>
         <Toolbar sx={{display:'flex', alignItems:'center', justifyContent:'center', gap:'10px'}}>
         <Typography variant="h6" style={{ flexGrow: 1, color: "#FFD700" }}>
-            {capitalize(user.fname)} {capitalize(user.lname)}
+            {capitalize(user?.fname)} {capitalize(user?.lname)}
           </Typography>
           <Tooltip title="Home">
             <IconButton color="inherit">
@@ -37,7 +37,6 @@ const Navbar = () => {
             <Link to={'/calendar'}> <CalendarIcon style={{ color: "#FFD700" }} /> </Link>
             </IconButton>
           </Tooltip>
-          
           <Tooltip title="View Profile">
             <IconButton color="inherit" >
               <Link to={'/profile'}> <PersonIcon style={{ color: "#FFD700" }} /> </Link>

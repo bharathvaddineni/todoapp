@@ -8,6 +8,8 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Checkbox,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -27,11 +29,24 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import Confetti from "react-confetti";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
   const [deleteItemId, setDeleteItemId] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isXsScreen = useMediaQuery("(max-width:600px)");
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   const shareViaWhatsApp = (todo) => {
     const attachmentsText = todo.attachments
       ? todo.attachments.map((attachment) => attachment.url).join("\n")
@@ -199,6 +214,7 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                           fontFamily: "Arial",
                           fontSize: "16px",
                           color: "#333333",
+                          margin:"5px",
                           textDecoration: todo.completed
                             ? "line-through"
                             : "none",
@@ -331,34 +347,73 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                 )}
               </div>
             </div>
-            <ListItemSecondaryAction className="flex md:gap-4 md:flex-row sm:gap-4 flex-col">
-
-              <IconButton
-                edge="end"
-                onClick={() => shareViaWhatsApp(todo)}
-                aria-label="share via whatsapp"
-                style={{ color: todo.completed ? "grey" : "black" }}
-              >
-                <WhatsAppIcon />
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="edit"
-                onClick={() => handleEdit(todo)}
-                disabled={todo.completed}
-                style={{ color: todo.completed ? "grey" : "black" }}
-              >
-                <EditIcon />
-              </IconButton>
-              <IconButton
-                edge="end"
-                aria-label="delete"
-                onClick={() => confirmDelete(todo.id)}
-                disabled={todo.completed}
-                style={{ color: todo.completed ? "grey" : "red" }}
-              >
-                <DeleteIcon />
-              </IconButton>
+            <ListItemSecondaryAction className="flex gap-4 flex-wrap">
+              {isXsScreen && (
+                <>
+                  <IconButton
+                    edge="end"
+                    onClick={handleClick}
+                    aria-label="actions"
+                    style={{ color: "black" }}
+                  >
+                    <ArrowDropDownIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={() => shareViaWhatsApp(todo)}>
+                      <WhatsAppIcon />
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => handleEdit(todo)}
+                      disabled={todo.completed}
+                      style={{ color: todo.completed ? "grey" : "black" }}
+                    >
+                      <EditIcon />
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => confirmDelete(todo.id)}
+                      disabled={todo.completed}
+                      style={{ color: todo.completed ? "grey" : "red" }}
+                    >
+                      <DeleteIcon />
+                    </MenuItem>
+                  </Menu>{" "}
+                </>
+              )}
+              {!isXsScreen && (
+                <>
+                  <ListItemSecondaryAction className="flex gap-4">
+                    <IconButton
+                      edge="end"
+                      onClick={() => shareViaWhatsApp(todo)}
+                      aria-label="share via whatsapp"
+                    >
+                      <WhatsAppIcon />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="edit"
+                      onClick={() => handleEdit(todo)}
+                      disabled={todo.completed}
+                      style={{ color: todo.completed ? "grey" : "black" }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => confirmDelete(todo.id)}
+                      disabled={todo.completed}
+                      style={{ color: todo.completed ? "grey" : "red" }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </>
+              )}
             </ListItemSecondaryAction>
           </ListItem>
         ))}
