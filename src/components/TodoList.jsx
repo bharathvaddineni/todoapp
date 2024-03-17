@@ -148,7 +148,7 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
         setShowConfetti(false); 
         const filteredTodos = todos.filter((todo) => !todo.completed);
         setTodos(filteredTodos);
-    })
+    },5000)
   }}, [todos]);
 
   return (
