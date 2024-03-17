@@ -22,7 +22,6 @@ function App() {
   return (
     <div>
       {user && (
-        // If user is present, display a logout button or link
         <div>
            <Navbar />
         </div>
