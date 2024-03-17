@@ -48,9 +48,7 @@ function MonthView() {
   const getDaysInMonth = (month, year) => {
     const monthStart = startOfMonth(new Date(year, month));
 
-
     const monthEnd = endOfMonth(monthStart);
-    
 
     const startDate = startOfWeek(monthStart);
 
@@ -84,7 +82,7 @@ function MonthView() {
     currentDate.getMonth(),
     currentDate.getFullYear()
   );
- 
+
   const goToToday = () => {
     setCurrentDate(new Date());
     setSelectedDate(format(new Date(), "yyyy-MM-dd"));
@@ -112,9 +110,9 @@ function MonthView() {
   });
 
   return (
-    <div className="width-100 mx-auto mt-8 flex">
-      <div className="w-1/3 m-8 border border-gray-100 shadow-lg rounded-3xl p-4">
-        <div className="flex items-center justify-between mb-4">
+    <div className="width-100 mx-auto mt-8 flex flex-wrap">
+      <div className="flex-1 m-8 border border-gray-00 shadow-lg rounded-3xl p-4">
+        <div className="flex items-center justify-between mb-4  flex-wrap">
           <div className="flex items-center">
             <select
               className="mr-2 px-2 py-1 text-teal-600"
@@ -152,16 +150,19 @@ function MonthView() {
           </div>
           <div>
             <button
-              className="px-4 py-2 hover:text-red-800 text-red-600"
+              className="md:p-4 p-2 hover:text-red-800 text-red-600 text-lg"
               onClick={prevMonth}
             >
               &lt;
             </button>
-            <button className="px-4 py-2 text-teal-600" onClick={goToToday}>
+            <button
+              className="md:p-4 p-2 text-teal-600 text-lg"
+              onClick={goToToday}
+            >
               Today
             </button>
             <button
-              className="px-4 py-2 text-red-600 hover:text-red-800"
+              className="md:p-4 p-2 text-red-600 hover:text-red-800 text-lg"
               onClick={nextMonth}
             >
               &gt;
@@ -190,11 +191,12 @@ function MonthView() {
                     ? "bg-slate-700 text-white"
                     : ""
                 } ${
-                  holidays.some((holiday) => holiday.date === format(day, "yyyy-MM-dd"))
+                  holidays.some(
+                    (holiday) => holiday.date === format(day, "yyyy-MM-dd")
+                  )
                     ? " bg-purple-500 text-white"
                     : ""
-                }`} 
-
+                }`}
                 onClick={() => handleSelectedDate(day)}
               >
                 {format(day, "d")}
@@ -206,8 +208,12 @@ function MonthView() {
         </div>
         <div className="mt-4 flex justify-center"></div>
       </div>
-      <div className="w-1/2 m-8">
-        <EventPage holidays={holidays} selectedDate={selectedDate} startPage={1} />
+      <div className="flex-1 m-8">
+        <EventPage
+          holidays={holidays}
+          selectedDate={selectedDate}
+          startPage={1}
+        />
         {/* {selectedDate && <p>{selectedDate}</p>} */}
       </div>
     </div>

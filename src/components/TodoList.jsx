@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import AttachmentSharpIcon from '@mui/icons-material/AttachmentSharp';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import InsertLinkTwoToneIcon from '@mui/icons-material/InsertLinkTwoTone';
+import AttachmentSharpIcon from "@mui/icons-material/AttachmentSharp";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import InsertLinkTwoToneIcon from "@mui/icons-material/InsertLinkTwoTone";
 import {
   updateDoc,
   doc,
@@ -34,24 +34,25 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
   const [showConfetti, setShowConfetti] = useState(false);
   const shareViaWhatsApp = (todo) => {
     const attachmentsText = todo.attachments
-    ? todo.attachments.map((attachment) => attachment.url).join('\n')
-    : 'None';
-  const subtasksText = todo.subTasks
-    ? todo.subTasks.map((subtask) => subtask.task).join(', ')
-    : 'None';
-  const categoriesText = todo.categories
-    ? todo.categories.join(', ')
-    : 'None';
+      ? todo.attachments.map((attachment) => attachment.url).join("\n")
+      : "None";
+    const subtasksText = todo.subTasks
+      ? todo.subTasks.map((subtask) => subtask.task).join(", ")
+      : "None";
+    const categoriesText = todo.categories
+      ? todo.categories.join(", ")
+      : "None";
 
-  const message = `Task: ${todo.task}\n` +
-    `Subtasks: ${subtasksText}\n` +
-    `Due: ${formatDueDate(todo.dueDateTime)}\n` +
-    `Priority: ${todo.priority}\n` +
-    `Attachments:\n${attachmentsText}\n` +
-    `Categories: ${categoriesText}`;
+    const message =
+      `Task: ${todo.task}\n` +
+      `Subtasks: ${subtasksText}\n` +
+      `Due: ${formatDueDate(todo.dueDateTime)}\n` +
+      `Priority: ${todo.priority}\n` +
+      `Attachments:\n${attachmentsText}\n` +
+      `Categories: ${categoriesText}`;
 
-  const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(message)}`;
-  window.location.href = whatsappUrl;
+    const whatsappUrl = `whatsapp://send?text=${encodeURIComponent(message)}`;
+    window.location.href = whatsappUrl;
   };
 
   const confirmDelete = (todoId) => {
@@ -145,11 +146,12 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
       );
       setShowConfetti(true);
       setTimeout(() => {
-        setShowConfetti(false); 
+        setShowConfetti(false);
         const filteredTodos = todos.filter((todo) => !todo.completed);
         setTodos(filteredTodos);
-    },5000)
-  }}, [todos]);
+      }, 5000);
+    }
+  }, [todos]);
 
   return (
     <>
@@ -264,7 +266,7 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                       color: "#333333",
                       fontFamily: "Arial",
                       fontSize: "0.8rem",
-                      display:'flex',
+                      display: "flex",
                     }}
                   >
                     {todo.attachments.map((attachment, index) => (
@@ -275,14 +277,16 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                         rel="noopener noreferrer"
                         style={{
                           marginRight: "10px",
-                          color:'red',
+                          color: "red",
                           textDecoration: "none",
-                          display:'flex',
-                          alignItems: 'center',
-                          gap:'5px'
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "5px",
                         }}
                       >
-                        <InsertLinkTwoToneIcon style={{fontSize:'medium',color:"red"}}/>
+                        <InsertLinkTwoToneIcon
+                          style={{ fontSize: "medium", color: "red" }}
+                        />
                         {attachment.name}
                       </a>
                     ))}
@@ -294,35 +298,47 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                       marginLeft: "20px",
                       marginTop: "5px",
                       color: "#555555",
-                      fontFamily:'Arial'
+                      fontFamily: "Arial",
                     }}
                   >
                     {todo.categories.map((category, index) => (
                       <span
                         key={index}
-                        style={{ marginRight: "5px",fontSize:'0.8rem',fontStyle:'italic',fontWeight:'bold'}}
+                        style={{
+                          marginRight: "5px",
+                          fontSize: "0.8rem",
+                          fontStyle: "italic",
+                          fontWeight: "bold",
+                        }}
                       >{`#${category.toLowerCase()}`}</span>
                     ))}
                   </div>
                 )}
-                 {todo.dueDateTime && (
-                        <span
-                          style={{
-                            fontFamily: "Arial",
-                            
-                            fontSize:'0.8rem',fontWeight:'bold',
-                            marginLeft: "20px",
+                {todo.dueDateTime && (
+                  <span
+                    style={{
+                      fontFamily: "Arial",
+
+                      fontSize: "0.8rem",
+                      fontWeight: "bold",
+                      marginLeft: "20px",
                       marginTop: "5px",
-                            color: "#333333",
-                          }}
-                        >
-                          Due: {formatDueDate(todo.dueDateTime)}
-                        </span>
-                      )}
+                      color: "#333333",
+                    }}
+                  >
+                    Due: {formatDueDate(todo.dueDateTime)}
+                  </span>
+                )}
               </div>
             </div>
-            <ListItemSecondaryAction style={{display:'flex',gap:"25px"}}>
-            <IconButton edge="end" onClick={() => shareViaWhatsApp(todo)} aria-label="share via whatsapp">
+            <ListItemSecondaryAction className="flex md:gap-4 md:flex-row sm:gap-4 flex-col">
+
+              <IconButton
+                edge="end"
+                onClick={() => shareViaWhatsApp(todo)}
+                aria-label="share via whatsapp"
+                style={{ color: todo.completed ? "grey" : "black" }}
+              >
                 <WhatsAppIcon />
               </IconButton>
               <IconButton
@@ -330,7 +346,7 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                 aria-label="edit"
                 onClick={() => handleEdit(todo)}
                 disabled={todo.completed}
-                style={{ color: todo.completed ? 'grey' : 'black' }}
+                style={{ color: todo.completed ? "grey" : "black" }}
               >
                 <EditIcon />
               </IconButton>
@@ -339,10 +355,9 @@ const TodoList = ({ todos, setTodos, handleEdit, handleDelete }) => {
                 aria-label="delete"
                 onClick={() => confirmDelete(todo.id)}
                 disabled={todo.completed}
-                style={{ color: todo.completed ? 'grey' : 'red' }}
-                
+                style={{ color: todo.completed ? "grey" : "red" }}
               >
-                <DeleteIcon/>
+                <DeleteIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>

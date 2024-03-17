@@ -13,6 +13,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 const History = () => {
   const [completedTodos, setCompletedTodos] = useState([]);
   const userId = auth.currentUser.uid;
+  const colors = ["#FFE082", "#FFCC80", "#FFAB91", "#B2DFDB", "#B3E5FC", "#C5CAE9"];
 
   useEffect(() => {
     const fetchCompletedTodos = async () => {
@@ -79,25 +80,21 @@ const History = () => {
         <Typography variant="body1">No completed todos found.</Typography>
       ) : (
         <List
-          sx={{ display: "flex", justifyContent: "space-between", gap: "20px" }}
+          sx={{ display: "flex",flexDirection:'column' }}
         >
-          <Box>
-            {completedTodos.map((todo) => (
+            {completedTodos.map((todo,index) => (
               <ListItem
-                key={todo.id}
+                key={index}
                 sx={{
-                  backgroundColor: "orange",
+                  backgroundColor: colors[index % colors.length],
                   padding: "10px",
                   margin: "10px",
                   borderRadius: "10px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  minWidth: "100%",
+                  display:'flex',
+                  justifyContent:'space-between'
                 }}
               >
-                <Box
-                  sx={{ display: "flex", flexDirection: "column", padding: 0 }}
-                >
+                <Box>
                   <ListItemText
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
@@ -155,7 +152,6 @@ const History = () => {
                 </Box>
               </ListItem>
             ))}
-          </Box>
 
         </List>
       )}

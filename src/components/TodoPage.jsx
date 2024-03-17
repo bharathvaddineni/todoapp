@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
+import axios from "axios";
 import {
   Card,
   CardHeader,
@@ -47,6 +47,7 @@ import TodoList from "./TodoList";
 import { v4 as uuidv4 } from "uuid";
 import { format } from "date-fns";
 import dayjs from "dayjs";
+import { wrap } from "framer-motion";
 
 const TodoPage = () => {
   const [todos, setTodos] = useState([]);
@@ -71,7 +72,6 @@ const TodoPage = () => {
   const [tasksSuggestion, setTasksSuggestion] = useState([]);
 
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
- 
 
   const handleResetDate = () => {
     setSelectedDate(null);
@@ -186,7 +186,7 @@ const TodoPage = () => {
       const formattedDueDateTime = dueDateTime
         ? dayjs(dueDateTime).toISOString()
         : null;
-        const currentDateAndTime = new Date().toISOString();
+      const currentDateAndTime = new Date().toISOString();
       const editedTask = {
         userId: user.uid,
         id: editedTaskId,
@@ -441,75 +441,69 @@ const TodoPage = () => {
     }
   };
   useEffect(() => {
-       fetchTodos();
+    fetchTodos();
   }, [searchQuery, selectedDate]);
 
   const isXsScreen = useMediaQuery("(max-width:900px)");
 
   return (
     <>
-      <Card style={{ margin: "20px", padding: "10px" }}>
-        <CardHeader
-          style={{ background: "#E0F7FA", flexShrink: 1 }}
-          action={
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-              }}
-            >
-              <div style={{ marginRight: "10px" }}>
-                <TextField
-                  id="search"
-                  label="Search"
-                  variant="outlined"
-                  size="small"
-                  placeholder="Search for #hashtags"
-                  onChange={handleSearchChange}
-                />
-              </div>
-              <div style={{ marginRight: "10px" }}>
-                <Select
-                  // label="Sort"
-                  value={sortBy}
-                  onChange={handleSortChange}
-                  variant="outlined"
-                  size="small"
-                  style={{ minWidth: "120px" }}
-                >
-                  <MenuItem value="Sort">Sort</MenuItem>
-                  <MenuItem value="dueDate">Due Date</MenuItem>
-                  <MenuItem value="priority">Priority</MenuItem>
-                  <MenuItem value="reset">Reset</MenuItem>
-                </Select>
-              </div>
-              <div style={{ marginRight: "10px" }}>
-                <IconButton
-                  aria-label="filter"
-                  onClick={() => setCalendarOpen(!calendarOpen)}
-                >
-                  <Tooltip title="Filter">
-                    <FilterListIcon />
-                  </Tooltip>
-                </IconButton>
-              </div>
-              <div>
-                <Button
-                  variant="contained"
-                  startIcon={<AddIcon />}
-                  color="primary"
-                  onClick={handleOpenModal}
-                >
-                  {isXsScreen ? "Add" : "Add Todo"}
-                </Button>
-              </div>
+      <div
+        style={{
+          margin: "20px",
+          padding: "10px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <div className="flex flex-col bg-blue-100 shadow-md p-4 m-4 items-end">
+          <div className="flex flex-wrap">
+            <div className="m-2">
+              <TextField
+                id="search"
+                label="Search"
+                variant="outlined"
+                size="small"
+                placeholder="Search for #hashtags"
+                onChange={handleSearchChange}
+              />
             </div>
-          }
-        />
-
-        <CardContent>
+            <div className="m-2">
+              <Select
+                value={sortBy}
+                onChange={handleSortChange}
+                variant="outlined"
+                size="small"
+                style={{ minWidth: "120px" }}
+              >
+                <MenuItem value="Sort">Sort</MenuItem>
+                <MenuItem value="dueDate">Due Date</MenuItem>
+                <MenuItem value="priority">Priority</MenuItem>
+                <MenuItem value="reset">Reset</MenuItem>
+              </Select>
+            </div>
+            <div className="m-2">
+              <IconButton
+                aria-label="filter"
+                onClick={() => setCalendarOpen(!calendarOpen)}
+              >
+                <Tooltip title="Filter">
+                  <FilterListIcon />
+                </Tooltip>
+              </IconButton>
+            </div>
+            <div className="m-2">
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleOpenModal}
+              >
+                Add Todo
+              </Button>
+            </div>
+          </div>
+        </div>
+        <div className="p-4">
           {todos.length === 0 && searchQuery.trim() !== "" ? (
             <Typography variant="body1" align="center" color="textSecondary">
               No todos found matching the #hashtag.
@@ -529,8 +523,8 @@ const TodoPage = () => {
               handleDelete={handleDelete}
             />
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <Modal
         open={openModal}
